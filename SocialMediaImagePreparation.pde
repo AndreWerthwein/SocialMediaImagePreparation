@@ -20,6 +20,9 @@ void setup()
 
 void draw()
 {
+  println("Generating variations for Social-Media-Scenarios");
+  println();
+
   for (int x = 0; x < imagesInDirectory.length; x++)
   {
     PImage originalImage = loadImage(sourcePathName + imagesInDirectory[x]);
@@ -30,6 +33,17 @@ void draw()
     } else {
       fileName = cleanUpFileName(imagesInDirectory[x]);
       println("Current Transformation:" + fileName);
+      
+      if (imagesInDirectory[x].contains("-grid-9") == true)
+      {
+        genereateElementsForGridNine(originalImage);
+      } else if (imagesInDirectory[x].contains("-grid-6") == true)
+      {
+        genereateElementsForGridSix(originalImage);
+      } else if (imagesInDirectory[x].contains("-grid-3") == true)
+      {
+        genereateElementsForGridThree(originalImage);
+      }
     }
     println("------------");
   }
@@ -58,7 +72,7 @@ void genereateElementsForGridNine(PImage baseImage)
     {
       PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
       // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-      imageSection.save(targetPathName + fileName + i + ".jpg");
+      imageSection.save(targetPathName + fileName + "-" + i + ".jpg");
       
       xStart = xStart - gridElementSize;
       
@@ -74,7 +88,7 @@ void genereateElementsForGridNine(PImage baseImage)
 void genereateElementsForGridSix(PImage baseImage)
 {
   // transforming image into needed format
-  PImage toBeTransformedImage = transformToSquare(baseImage);
+  PImage toBeTransformedImage = transformToThreeToTwo(baseImage);
   image(toBeTransformedImage, 0, 0);
   
   println("Generating image sections to produce a grid, consisting of 6 sub-images.");
@@ -89,7 +103,7 @@ void genereateElementsForGridSix(PImage baseImage)
     for (int x = 0; x < 3; x++)
     {
       PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
-      imageSection.save(targetPathName + fileName + i + ".jpg");
+      imageSection.save(targetPathName + fileName + "-" + i + ".jpg");
       
       xStart = xStart - gridElementSize;
       i++;
@@ -116,7 +130,7 @@ void genereateElementsForGridThree(PImage baseImage)
   {
     PImage imageSection = toBeTransformedImage.get(xStart, 0, gridElementSize, gridElementSize);
     // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-    imageSection.save(targetPathName + fileName + i + ".jpg");
+    imageSection.save(targetPathName + fileName + "-" + i + ".jpg");
     
     xStart = xStart - gridElementSize;
     i++;
