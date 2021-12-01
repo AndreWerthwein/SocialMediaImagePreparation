@@ -1,4 +1,5 @@
 PImage originalImage;
+PImage newImage;
 int baseWidth = 1200;
 int baseHeight = 1200;
 
@@ -18,13 +19,15 @@ void draw()
     println("Current Image: ");
     println();
     
-    genereateElementsForGridNine(originalImage);
+    // genereateElementsForGridNine(originalImage);
+    // genereateElementsForGridThree(originalImage);
   }
   println();
   println("Done.");
-  exit();
+  // exit();
 }
 
+// generate elements for grid 3:3:3
 void genereateElementsForGridNine(PImage baseImage)
 {
   // transforming image into needed format
@@ -56,34 +59,38 @@ void genereateElementsForGridNine(PImage baseImage)
   }
 }
 
-// transform image to 3:1
-PImage transformToThreeToOne(PImage baseImage)
+// generate elements for grid 3:3
+void genereateElementsForGridSix(PImage baseImage)
 {
-  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:1");
-  PImage imageSection = baseImage;
+  // transforming image into needed format
+  PImage toBeTransformedImage = transformToSquare(baseImage);
+  image(toBeTransformedImage, 0, 0);
   
-  if (baseImage.width < baseImage.height)
-  {
-    println("[ERROR] This image is unfit for the targeted transfomation.");
-    exit();
-  } else {
-  }
-  return imageSection;
+  println("Generating image sections to produce a grid, consisting of 6 sub-images.");
 }
 
-// transform image to 3:2
-PImage transformToThreeToTwo(PImage baseImage)
+// generate elements for grid 3
+void genereateElementsForGridThree(PImage baseImage)
 {
-  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:2");
-  PImage imageSection = baseImage;
+  // transforming image into needed format
+  PImage toBeTransformedImage = transformToThreeToOne(baseImage);
+  image(toBeTransformedImage, 0, 0);
   
-  if (baseImage.width < baseImage.height)
+  println("Generating image sections to produce a grid, consisting of 3 sub-images.");
+  int gridElementSize = baseImage.width / 3;
+  
+  int xStart = gridElementSize * 2;
+  int i = 1;
+  
+  for (int x = 0; x < 3; x++)
   {
-    println("[ERROR] This image is unfit for the targeted transfomation.");
-    exit();
-  } else {
+    PImage imageSection = baseImage.get(xStart, 0, gridElementSize, gridElementSize);
+    // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
+    imageSection.save("Neu- " + i + ".jpg");
+    
+    xStart = xStart - gridElementSize;
+    i++;
   }
-  return imageSection;
 }
 
 // transform image to 1:1
@@ -108,6 +115,48 @@ PImage transformToSquare(PImage baseImage)
     
     int yStart = (baseImage.height - baseHeight) / 2;
     imageSection = baseImage.get(0, yStart, baseWidth, baseHeight);
+  }
+  return imageSection;
+}
+
+// transform image to 3:2
+PImage transformToThreeToTwo(PImage baseImage)
+{
+  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:2");
+  PImage imageSection = baseImage;
+  
+  if (baseImage.width < baseImage.height)
+  {
+    println("[ERROR] This image is unfit for the targeted transfomation.");
+    exit();
+  } else {
+  }
+  return imageSection;
+}
+
+// transform image to 3:1
+PImage transformToThreeToOne(PImage baseImage)
+{
+  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:1");
+  PImage imageSection = baseImage;
+  
+  if (baseImage.width < baseImage.height)
+  {
+    println("[ERROR] This image is unfit for the targeted transfomation.");
+    exit();
+  } else {
+    int potentialElementHeight = baseImage.width / 3;
+    
+    
+    if (potentialElementHeight > baseImage.height) {
+      println("[ERROR] This image is unfit for the targeted transfomation.");
+      exit();
+    } else {
+      int yStart = (baseImage.height - potentialElementHeight) / 2;
+      
+      imageSection = baseImage.get(0, yStart, baseImage.width, potentialElementHeight);
+      imageSection.resize(1200, 0);
+    }
   }
   return imageSection;
 }
