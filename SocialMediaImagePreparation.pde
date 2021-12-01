@@ -1,27 +1,37 @@
-PImage originalImage;
-PImage newImage;
+// enter path to source directory here:
+String sourcePathName = "C:/Users/andre/Documents/GitHub/SocialMediaImagePreparation/src/";
+
+// enter path to target directory here:
+String targetPathName = "C:/Users/andre/Documents/GitHub/SocialMediaImagePreparation/";
+
+String fileName;
+
 int baseWidth = 1200;
 int baseHeight = 1200;
+
+java.io.File folder = new java.io.File(dataPath(sourcePathName));
+String[] imagesInDirectory = folder.list();
 
 void setup()
 {
   size(1200, 1200);
-  originalImage = loadImage("test.jpg");
   noLoop();
 }
 
 void draw()
 {
-  if (originalImage.width < 1200) {
-    println("The given image is too small to be qualify for any of the implemented Social-Media-Scenarios.");
-    exit();
-  } else {
-    println("Current Image: ");
-    println();
+  for (int x = 0; x < imagesInDirectory.length; x++)
+  {
+    PImage originalImage = loadImage(sourcePathName + imagesInDirectory[x]);
     
-    genereateElementsForGridNine(originalImage);
-    genereateElementsForGridThree(originalImage);
-    genereateElementsForGridSix(originalImage);
+    if (originalImage.width < 1200) {
+      println("The given image is too small to be qualify for any of the implemented Social-Media-Scenarios.");
+      exit();
+    } else {
+      fileName = cleanUpFileName(imagesInDirectory[x]);
+      println("Current Transformation:" + fileName);
+    }
+    println("------------");
   }
   println();
   println("Done.");
@@ -48,7 +58,7 @@ void genereateElementsForGridNine(PImage baseImage)
     {
       PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
       // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-      imageSection.save("Neu-9-" + i + ".jpg");
+      imageSection.save(targetPathName + fileName + i + ".jpg");
       
       xStart = xStart - gridElementSize;
       
@@ -79,7 +89,7 @@ void genereateElementsForGridSix(PImage baseImage)
     for (int x = 0; x < 3; x++)
     {
       PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
-      imageSection.save("Neu-6-" + i + ".jpg");
+      imageSection.save(targetPathName + fileName + i + ".jpg");
       
       xStart = xStart - gridElementSize;
       i++;
@@ -106,7 +116,7 @@ void genereateElementsForGridThree(PImage baseImage)
   {
     PImage imageSection = toBeTransformedImage.get(xStart, 0, gridElementSize, gridElementSize);
     // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-    imageSection.save("Neu-3-" + i + ".jpg");
+    imageSection.save(targetPathName + fileName + i + ".jpg");
     
     xStart = xStart - gridElementSize;
     i++;
@@ -196,4 +206,37 @@ PImage transformToThreeToOne(PImage baseImage)
     }
   }
   return imageSection;
+}
+
+String cleanUpFileName(String baseFileName)
+{
+  String modifiedFileName = baseFileName.replace(".jpg", "");
+  
+  // commands to apply intended social media variations are not part of the filename
+  if (modifiedFileName.contains("-grid-9") == true)
+  {
+    modifiedFileName = modifiedFileName.replace("-grid-9", "");
+  } else if (modifiedFileName.contains("-grid-6") == true)
+  {
+    modifiedFileName = modifiedFileName.replace("-grid-6", "");
+  } else if (modifiedFileName.contains("-grid-3") == true)
+  {
+    modifiedFileName = modifiedFileName.replace("-grid-3", "");
+  }
+  
+  // due to naming-convention filenames may contain single-digit numbers
+  if (modifiedFileName.contains("1") == true 
+      || modifiedFileName.contains("2") == true 
+      || modifiedFileName.contains("3") == true
+      || modifiedFileName.contains("4") == true 
+      || modifiedFileName.contains("5") == true 
+      || modifiedFileName.contains("6") == true 
+      || modifiedFileName.contains("7") == true
+      || modifiedFileName.contains("8") == true 
+      || modifiedFileName.contains("9") == true)
+  {
+    modifiedFileName = modifiedFileName.substring(0, (modifiedFileName.length() - 2));
+  }
+  
+  return modifiedFileName;
 }
