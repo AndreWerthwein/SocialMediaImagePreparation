@@ -19,12 +19,13 @@ void draw()
     println("Current Image: ");
     println();
     
-    // genereateElementsForGridNine(originalImage);
-    // genereateElementsForGridThree(originalImage);
+    genereateElementsForGridNine(originalImage);
+    genereateElementsForGridThree(originalImage);
+    genereateElementsForGridSix(originalImage);
   }
   println();
   println("Done.");
-  // exit();
+  exit();
 }
 
 // generate elements for grid 3:3:3
@@ -35,19 +36,19 @@ void genereateElementsForGridNine(PImage baseImage)
   image(toBeTransformedImage, 0, 0);
   
   println("Generating image sections to produce a grid, consisting of 9 sub-images.");  
-  int gridElementSize = baseImage.width / 3;
+  int gridElementSize = toBeTransformedImage.width / 3;
 
   int xStart = gridElementSize * 2;
   int yStart = gridElementSize * 2;
   int i = 1;
   
-  for (int x = 0; x < 3; x++)
+  for (int y = 0; y < 3; y++)
   {
-    for (int y = 0; y < 3; y++)
+    for (int x = 0; x < 3; x++)
     {
-      PImage imageSection = baseImage.get(xStart, yStart, gridElementSize, gridElementSize);
+      PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
       // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-      imageSection.save("Neu-" + i + ".jpg");
+      imageSection.save("Neu-9-" + i + ".jpg");
       
       xStart = xStart - gridElementSize;
       
@@ -67,6 +68,25 @@ void genereateElementsForGridSix(PImage baseImage)
   image(toBeTransformedImage, 0, 0);
   
   println("Generating image sections to produce a grid, consisting of 6 sub-images.");
+  int gridElementSize = toBeTransformedImage.width / 3;
+  
+  int xStart = gridElementSize * 2;
+  int yStart = gridElementSize;
+  int i = 1;
+  
+  for (int y = 0; y < 2; y++)
+  {
+    for (int x = 0; x < 3; x++)
+    {
+      PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
+      imageSection.save("Neu-6-" + i + ".jpg");
+      
+      xStart = xStart - gridElementSize;
+      i++;
+    }
+    yStart = yStart - gridElementSize;
+    xStart = gridElementSize * 2;
+  }
 }
 
 // generate elements for grid 3
@@ -77,16 +97,16 @@ void genereateElementsForGridThree(PImage baseImage)
   image(toBeTransformedImage, 0, 0);
   
   println("Generating image sections to produce a grid, consisting of 3 sub-images.");
-  int gridElementSize = baseImage.width / 3;
+  int gridElementSize = toBeTransformedImage.width / 3;
   
   int xStart = gridElementSize * 2;
   int i = 1;
   
   for (int x = 0; x < 3; x++)
   {
-    PImage imageSection = baseImage.get(xStart, 0, gridElementSize, gridElementSize);
+    PImage imageSection = toBeTransformedImage.get(xStart, 0, gridElementSize, gridElementSize);
     // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-    imageSection.save("Neu- " + i + ".jpg");
+    imageSection.save("Neu-3-" + i + ".jpg");
     
     xStart = xStart - gridElementSize;
     i++;
@@ -130,6 +150,23 @@ PImage transformToThreeToTwo(PImage baseImage)
     println("[ERROR] This image is unfit for the targeted transfomation.");
     exit();
   } else {
+    if ((baseImage.width / 3) > (baseImage.height / 2)) {
+      int potentialGridElementSize = baseImage.height / 2;
+      int potentialTransformationWidth = potentialGridElementSize * 3;
+      int potentialTransformationHeight = baseImage.height;
+      
+      int xStart = (baseImage.width - potentialTransformationWidth) / 2;
+      imageSection = baseImage.get(xStart, 0, potentialTransformationWidth, potentialTransformationHeight);
+      
+    } else {
+      int potentialGridElementSize = baseImage.width / 3;
+      int potentialTransformationWidth = baseImage.width;
+      int potentialTransformationHeight = potentialGridElementSize * 2;
+      
+      int yStart = (baseImage.height - potentialTransformationHeight) / 2;
+      imageSection = baseImage.get(0, yStart, potentialTransformationWidth, potentialTransformationHeight);
+      imageSection.resize(1200, 0);
+    }
   }
   return imageSection;
 }
