@@ -1,1 +1,113 @@
+PImage originalImage;
+int baseWidth = 1200;
+int baseHeight = 1200;
 
+void setup()
+{
+  size(1200, 1200);
+  originalImage = loadImage("test.jpg");
+  noLoop();
+}
+
+void draw()
+{
+  if (originalImage.width < 1200) {
+    println("The given image is too small to be qualify for any of the implemented Social-Media-Scenarios.");
+    exit();
+  } else {
+    println("Current Image: ");
+    println();
+    
+    genereateElementsForGridNine(originalImage);
+  }
+  println();
+  println("Done.");
+  exit();
+}
+
+void genereateElementsForGridNine(PImage baseImage)
+{
+  // transforming image into needed format
+  PImage toBeTransformedImage = transformToSquare(baseImage);
+  image(toBeTransformedImage, 0, 0);
+  
+  println("Generating image sections to produce a grid, consisting of 9 sub-images.");  
+  int gridElementSize = baseImage.width / 3;
+
+  int xStart = gridElementSize * 2;
+  int yStart = gridElementSize * 2;
+  int i = 1;
+  
+  for (int x = 0; x < 3; x++)
+  {
+    for (int y = 0; y < 3; y++)
+    {
+      PImage imageSection = baseImage.get(xStart, yStart, gridElementSize, gridElementSize);
+      // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
+      imageSection.save("Neu-" + i + ".jpg");
+      
+      xStart = xStart - gridElementSize;
+      
+      i++;
+    }
+    yStart = yStart - gridElementSize;
+    // reset, to start from the right
+    xStart = gridElementSize * 2;
+  }
+}
+
+// transform image to 3:1
+PImage transformToThreeToOne(PImage baseImage)
+{
+  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:1");
+  PImage imageSection = baseImage;
+  
+  if (baseImage.width < baseImage.height)
+  {
+    println("[ERROR] This image is unfit for the targeted transfomation.");
+    exit();
+  } else {
+  }
+  return imageSection;
+}
+
+// transform image to 3:2
+PImage transformToThreeToTwo(PImage baseImage)
+{
+  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:2");
+  PImage imageSection = baseImage;
+  
+  if (baseImage.width < baseImage.height)
+  {
+    println("[ERROR] This image is unfit for the targeted transfomation.");
+    exit();
+  } else {
+  }
+  return imageSection;
+}
+
+// transform image to 1:1
+PImage transformToSquare(PImage baseImage)
+{
+  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 1:1");
+  PImage imageSection = baseImage;
+  
+  if (baseImage.width == baseImage.height)
+  {
+    println("No transoformation, necessary.");
+    baseImage.resize(1200, 0);
+  } else if (baseImage.width > baseImage.height) {
+    println("Detected: 'Landscape Format'. >> Target: 'Square Format'");
+    baseImage.resize(0, 1200);
+    
+    int xStart = (baseImage.width - baseWidth) / 2;
+    imageSection = baseImage.get(xStart, 0, baseWidth, baseHeight);
+  } else if (baseImage.width < baseImage.height) {
+    println("Detected: 'Portrait Format'. >> Target: 'Square Format'");
+    baseImage.resize(1200, 0);
+    
+    int yStart = (baseImage.height - baseHeight) / 2;
+    imageSection = baseImage.get(0, yStart, baseWidth, baseHeight);
+  }
+  return imageSection;
+}
