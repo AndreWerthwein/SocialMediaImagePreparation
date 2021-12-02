@@ -32,7 +32,7 @@ void draw() {
       fileName = cleanUpFileName(imagesInDirectory[x]);
       commandName = imagesInDirectory[x];
       
-      automaticWorkflow(commandName, originalImage);
+      automaticWorkflow(commandName, originalImage, targetPathName, fileName);
     }
     println("------------");
   }
@@ -240,6 +240,104 @@ PImage transformToThreeToOne(String commandName, PImage baseImage) {
   return imageSection;
 }
 
+void galleryFraming(String commandName, PImage baseImage, String targetPathName, String fileName) {
+  println("Generating image framed image.");
+  size(1200, 1200);
+   
+  if (commandName.contains("white") == true) {
+    background(255, 255, 255);
+  } else if (commandName.contains("black") == true) {
+    background(0, 0, 0);
+  } else {
+    // custom color, by default: white
+    background(255, 255, 255);
+  }
+  int xStart = 0;
+  int yStart = 0;
+  int offsetSmallImage = 100;
+  int offsetMediumImage = 50;
+  
+  if (baseImage.width > baseImage.height) {
+    if (commandName.contains("gallery-s") == true) {
+      baseImage.resize(800, 0);
+      
+      if (commandName.contains("left") == true) {
+        xStart = offsetSmallImage;
+      } else if (commandName.contains("right") == true) {
+        xStart = baseWidth - (baseImage.width + offsetSmallImage);
+      } else if (commandName.contains("center") == true) {
+        xStart = (baseWidth - baseImage.width) / 2;        
+      } else {
+        xStart = (baseWidth - baseImage.width) / 2;
+      }
+      yStart = (baseHeight - baseImage.height) / 2;
+    }
+    
+    if (commandName.contains("gallery-m") == true) {
+      baseImage.resize(1000, 0);
+      
+      if (commandName.contains("left") == true) {
+        xStart = offsetMediumImage;
+      } else if (commandName.contains("right") == true) {
+        xStart = baseWidth - (baseImage.width + offsetMediumImage);
+      } else if (commandName.contains("center") == true) {
+        xStart = (baseWidth - baseImage.width) / 2;        
+      } else {
+        xStart = (baseWidth - baseImage.width) / 2;
+      }
+      yStart = (baseHeight - baseImage.height) / 2;
+    }
+    
+    if (commandName.contains("gallery-l") == true) {
+      baseImage.resize(1200, 0);
+      
+      xStart = 0;
+      yStart = (baseHeight - baseImage.height) / 2;
+    }
+  } else {
+    if (commandName.contains("gallery-s") == true) {
+      baseImage.resize(0, 800);
+     
+      if (commandName.contains("left") == true) {
+        xStart = offsetSmallImage;
+      } else if (commandName.contains("right") == true) {
+        xStart = baseWidth - (baseImage.width + offsetSmallImage);
+      } else if (commandName.contains("center") == true) {
+        xStart = (baseWidth - baseImage.width) / 2;        
+      } else {
+        xStart = (baseWidth - baseImage.width) / 2;
+      }
+      yStart = (baseHeight - baseImage.height) / 2;
+    }
+    
+    if (commandName.contains("gallery-m") == true) {
+      baseImage.resize(0, 1000);
+      
+      if (commandName.contains("left") == true) {
+        xStart = offsetMediumImage;
+      } else if (commandName.contains("right") == true) {
+        xStart = baseWidth - (baseImage.width + offsetMediumImage);
+      } else if (commandName.contains("center") == true) {
+        xStart = (baseWidth - baseImage.width);        
+      } else {
+        xStart = (baseWidth - baseImage.width);
+      }
+      yStart = (baseHeight - baseImage.height) / 2;
+    }
+    
+    if (commandName.contains("gallery-l") == true) {
+      baseImage.resize(0, 1200);
+      
+      yStart = 0;
+      xStart = (baseWidth - baseImage.width) / 2;
+    }
+  }
+  
+  image(baseImage, xStart, yStart);
+  
+  saveFrame(targetPathName + fileName + ".jpg");
+}
+
 String cleanUpFileName(String baseFileName) {
   String modifiedFileName = baseFileName.replace(".jpg", "");
   
@@ -286,15 +384,38 @@ String cleanUpFileName(String baseFileName) {
       || modifiedFileName.contains("7") == true
       || modifiedFileName.contains("8") == true 
       || modifiedFileName.contains("9") == true) {
-    modifiedFileName = modifiedFileName.substring(0, (modifiedFileName.length() - 2));
+        if (modifiedFileName.contains("gallery") == false) {
+          modifiedFileName = modifiedFileName.substring(0, (modifiedFileName.length() - 2));
+    }
   }
+  
+  if (modifiedFileName.contains("-gallery-s") == true) {
+    modifiedFileName = modifiedFileName.replace("-gallery-s", "");
+  }
+  
+  if (modifiedFileName.contains("-black") == true) {
+    modifiedFileName = modifiedFileName.replace("-black", "");
+  }
+  
+  if (modifiedFileName.contains("-white") == true) {
+    modifiedFileName = modifiedFileName.replace("-white", "");
+  }
+  
+  if (modifiedFileName.contains("-gallery-m") == true) {
+    modifiedFileName = modifiedFileName.replace("-gallery-m", "");
+  }
+  
+  if (modifiedFileName.contains("-gallery-l") == true) {
+    modifiedFileName = modifiedFileName.replace("-gallery-l", "");
+  }
+  
   print("Modifizierter Dateiname: " + modifiedFileName);
   
   return modifiedFileName;
 }
 
 // program-flow for fully automatic mode
-void automaticWorkflow(String commandName, PImage baseImage) {
+void automaticWorkflow(String commandName, PImage baseImage, String sourcePathName, String fileName) {
   println("# FULLY AUTOMATIC MODE");
   println();
   println("Current Transformation:" + fileName);
@@ -305,5 +426,7 @@ void automaticWorkflow(String commandName, PImage baseImage) {
     genereateElementsForGridSix(commandName, baseImage);
   } else if (commandName.contains("-grid-3") == true) {
     genereateElementsForGridThree(commandName, baseImage);
+  } else if (commandName.contains("gallery") == true) {
+    galleryFraming(commandName, baseImage, sourcePathName, fileName);
   }
 }
