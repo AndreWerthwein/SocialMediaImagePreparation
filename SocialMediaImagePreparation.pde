@@ -5,6 +5,7 @@ String sourcePathName = "C:/Users/andre/Documents/GitHub/SocialMediaImagePrepara
 String targetPathName = "C:/Users/andre/Documents/GitHub/SocialMediaImagePreparation/";
 
 String fileName;
+String commandName;
 
 int baseWidth = 1200;
 int baseHeight = 1200;
@@ -32,18 +33,9 @@ void draw()
       exit();
     } else {
       fileName = cleanUpFileName(imagesInDirectory[x]);
-      println("Current Transformation:" + fileName);
+      commandName = imagesInDirectory[x];
       
-      if (imagesInDirectory[x].contains("-grid-9") == true)
-      {
-        genereateElementsForGridNine(originalImage);
-      } else if (imagesInDirectory[x].contains("-grid-6") == true)
-      {
-        genereateElementsForGridSix(originalImage);
-      } else if (imagesInDirectory[x].contains("-grid-3") == true)
-      {
-        genereateElementsForGridThree(originalImage);
-      }
+      automaticWorkflow(commandName, originalImage);
     }
     println("------------");
   }
@@ -53,10 +45,10 @@ void draw()
 }
 
 // generate elements for grid 3:3:3
-void genereateElementsForGridNine(PImage baseImage)
+void genereateElementsForGridNine(String commandName, PImage baseImage)
 {
   // transforming image into needed format
-  PImage toBeTransformedImage = transformToSquare(baseImage);
+  PImage toBeTransformedImage = transformToSquare(commandName, baseImage);
   image(toBeTransformedImage, 0, 0);
   
   println("Generating image sections to produce a grid, consisting of 9 sub-images.");  
@@ -85,10 +77,10 @@ void genereateElementsForGridNine(PImage baseImage)
 }
 
 // generate elements for grid 3:3
-void genereateElementsForGridSix(PImage baseImage)
+void genereateElementsForGridSix(String commandName, PImage baseImage)
 {
   // transforming image into needed format
-  PImage toBeTransformedImage = transformToThreeToTwo(baseImage);
+  PImage toBeTransformedImage = transformToThreeToTwo(commandName, baseImage);
   image(toBeTransformedImage, 0, 0);
   
   println("Generating image sections to produce a grid, consisting of 6 sub-images.");
@@ -114,10 +106,10 @@ void genereateElementsForGridSix(PImage baseImage)
 }
 
 // generate elements for grid 3
-void genereateElementsForGridThree(PImage baseImage)
+void genereateElementsForGridThree(String commandName, PImage baseImage)
 {
   // transforming image into needed format
-  PImage toBeTransformedImage = transformToThreeToOne(baseImage);
+  PImage toBeTransformedImage = transformToThreeToOne(commandName, baseImage);
   image(toBeTransformedImage, 0, 0);
   
   println("Generating image sections to produce a grid, consisting of 3 sub-images.");
@@ -138,7 +130,7 @@ void genereateElementsForGridThree(PImage baseImage)
 }
 
 // transform image to 1:1
-PImage transformToSquare(PImage baseImage)
+PImage transformToSquare(String commandName, PImage baseImage)
 {
   println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 1:1");
   PImage imageSection = baseImage;
@@ -147,11 +139,31 @@ PImage transformToSquare(PImage baseImage)
   {
     println("No transoformation, necessary.");
     baseImage.resize(1200, 0);
+    imageSection = baseImage; 
   } else if (baseImage.width > baseImage.height) {
     println("Detected: 'Landscape Format'. >> Target: 'Square Format'");
-    baseImage.resize(0, 1200);
     
-    int xStart = (baseImage.width - baseWidth) / 2;
+    baseImage.resize(0, 1200);
+    int xStart = 0;
+    
+    if (commandName.contains("top") == true || commandName.contains("top") == true)
+    {
+      println("[ERROR] In 'Landscape Format' images can not be positioned on the 'y-Axis'; 'x-Axis' only. Please review your file naming!");
+    }
+    else 
+    {
+      if (commandName.contains("left") == true)
+      {
+        xStart = 0;
+      } else if (commandName.contains("right") == true)
+      {
+        xStart = baseImage.width - baseWidth;
+      } else if (commandName.contains("center") == true)
+      {
+        xStart = (baseImage.width - baseWidth) / 2;
+      }
+    }
+    
     imageSection = baseImage.get(xStart, 0, baseWidth, baseHeight);
   } else if (baseImage.width < baseImage.height) {
     println("Detected: 'Portrait Format'. >> Target: 'Square Format'");
@@ -164,7 +176,7 @@ PImage transformToSquare(PImage baseImage)
 }
 
 // transform image to 3:2
-PImage transformToThreeToTwo(PImage baseImage)
+PImage transformToThreeToTwo(String commandName, PImage baseImage)
 {
   println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:2");
   PImage imageSection = baseImage;
@@ -196,7 +208,7 @@ PImage transformToThreeToTwo(PImage baseImage)
 }
 
 // transform image to 3:1
-PImage transformToThreeToOne(PImage baseImage)
+PImage transformToThreeToOne(String commandName, PImage baseImage)
 {
   println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:1");
   PImage imageSection = baseImage;
@@ -236,6 +248,21 @@ String cleanUpFileName(String baseFileName)
   } else if (modifiedFileName.contains("-grid-3") == true)
   {
     modifiedFileName = modifiedFileName.replace("-grid-3", "");
+  } else if (modifiedFileName.contains("-top") == true)
+  {
+    modifiedFileName = modifiedFileName.replace("-top", "");
+  } else if (modifiedFileName.contains("-bottom") == true)
+  {
+    modifiedFileName = modifiedFileName.replace("-bottom", "");
+  } else if (modifiedFileName.contains("-left") == true)
+  {
+    modifiedFileName = modifiedFileName.replace("-left", "");
+  } else if (modifiedFileName.contains("-right") == true)
+  {
+    modifiedFileName = modifiedFileName.replace("-right", "");
+  } else if (modifiedFileName.contains("-center") == true)
+  {
+    modifiedFileName = modifiedFileName.replace("-center", "");
   }
   
   // due to naming-convention filenames may contain single-digit numbers
@@ -253,4 +280,23 @@ String cleanUpFileName(String baseFileName)
   }
   
   return modifiedFileName;
+}
+
+// program-flow for fully automatic mode
+void automaticWorkflow(String commandName, PImage baseImage)
+{
+  println("# FULLY AUTOMATIC MODE");
+  println();
+  println("Current Transformation:" + fileName);
+  
+  if (commandName.contains("-grid-9") == true)
+  {
+    genereateElementsForGridNine(commandName, baseImage);
+  } else if (commandName.contains("-grid-6") == true)
+  {
+    genereateElementsForGridSix(commandName, baseImage);
+  } else if (commandName.contains("-grid-3") == true)
+  {
+    genereateElementsForGridThree(commandName, baseImage);
+  }
 }
