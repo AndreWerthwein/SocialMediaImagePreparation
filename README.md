@@ -19,14 +19,14 @@ This is a small Processing-Sketch, that automatically generates all the differen
 
 #### Social Media Scenario
 
-| Operator | Effect on the automatic Generation |
-| --- | --- |
-| `-grid-9` | This generates all the elements of a 3x3 grid, consisting of 9 elements. |
-| `-grid-6` | This generates all the elements of a 3x2 grid, consisting of 6 elements. |
-| `-grid-3` | This generates all the elements of a 3x1 grid, consisting of 3 elements. |
-| `-gallery-s` | This will result in the image being scaled to fit a square, leaving borders around the image. The image is scaled to _small_ which results in wider borders. |
-| `-gallery-m` | This will result in the image being scaled to fit a square, leaving borders around the image. The image is scaled to _medium_ which results in smaller borders. |
-| `-gallery-l` | This will result in the image being scaled to fit a square, leaving borders around the image. The image is scaled to _large_ which results in borders on one of the axis; x-axis or y-axis, depending on the aspect ratio of the original image. |
+| Operator | Effect on the automatic Generation | Tested? |
+| --- | --- | --- |
+| `-grid-9` | This generates all the elements of a 3x3 grid, consisting of 9 elements. | Yes. |
+| `-grid-6` | This generates all the elements of a 3x2 grid, consisting of 6 elements. | No. |
+| `-grid-3` | This generates all the elements of a 3x1 grid, consisting of 3 elements. | Yes. |
+| `-gallery-s` | This will result in the image being scaled to fit a square, leaving borders around the image. The image is scaled to _small_ which results in wider borders. | Yes. |
+| `-gallery-m` | This will result in the image being scaled to fit a square, leaving borders around the image. The image is scaled to _medium_ which results in smaller borders. | Yes. |
+| `-gallery-l` | This will result in the image being scaled to fit a square, leaving borders around the image. The image is scaled to _large_ which results in borders on one of the axis; x-axis or y-axis, depending on the aspect ratio of the original image. | Yes. |
 
 - The generated elements of the operators `-grid-9`, `-grid-6` and `-grid-3` are automatically numbered.
   - The numeration starts in the bottom right and goes to the top left; row by row. (Posting following this numeration will result in the proper display of the grid, in your Instagram-Profile.)
@@ -35,13 +35,13 @@ _Note:_ The operators `-grid-9`, `-grid-6` and `-grid-3` can not be applied to i
 
 #### Position of basic transformations
 
-| Operator | Effect on the automatic Generation |
-| --- | --- |
-| `-top` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the top of the original image. |
-| `-bottom` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the bottom of the original image. |
-| `-left` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the left of the original image. |
-| `-right` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the right of the original image. |
-| `-center` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the center of the original image. |
+| Operator | Effect on the automatic Generation | Tested? |
+| --- | --- | --- |
+| `-top` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the top of the original image. | _In Progress._ |
+| `-bottom` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the bottom of the original image. | _In Progress._ |
+| `-left` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the left of the original image. | _In Progress._ |
+| `-right` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the right of the original image. | _In Progress._ |
+| `-center` | The basic transformation of the image, which is a default preparation, is positioned -- if possible -- at the center of the original image. | _In Progress._ |
 
 _Note:_ Please be aware that the operators `-left` and `-right` can not be used for images in portrait format, since always the full available width of the image is used.
 
@@ -51,10 +51,10 @@ _Note:_ Please be aware that the operators `-top` and `-bottom` can not be used 
 
 - This operators can be included, but are only applied within the proper Scenarios.
 
-| Operator | Effect on the automatic Generation |
-| --- | --- |
-| `black` | The background of a scenario such as `-gallery-s`, `-gallery-m` or `-gallery-l` is set to black. |
-| `white` | The background of a scenario such as `-gallery-s`, `-gallery-m` or `-gallery-l` is set to white. |
+| Operator | Effect on the automatic Generation | Tested? |
+| --- | --- | --- |
+| `black` | The background of a scenario such as `-gallery-s`, `-gallery-m` or `-gallery-l` is set to black. | _In Progress._ |
+| `white` | The background of a scenario such as `-gallery-s`, `-gallery-m` or `-gallery-l` is set to white. | _In Progress._ |
 
 ## UI-based Mode
 
