@@ -24,32 +24,39 @@ void draw() {
   exit();
 }
 
+// ----- GENERATING_GRIDS ----- //
+
 // generate elements for grid 3:3:3
 void genereateElementsForGridNine(String commandName, PImage baseImage) {
   // transforming image into needed format
   PImage toBeTransformedImage = transformToSquare(commandName, baseImage);
-  image(toBeTransformedImage, 0, 0);
   
-  println("Generating: All image sections to produce a grid, consisting of 9 sub-images.");  
-  int gridElementSize = toBeTransformedImage.width / 3;
-
-  int xStart = gridElementSize * 2;
-  int yStart = gridElementSize * 2;
-  int i = 1;
+  if (toBeTransformedImage == null) {
+    println("Generating: ----");
+  } else {
+    image(toBeTransformedImage, 0, 0);
+    
+    println("Generating: All image sections to produce a grid, consisting of 9 sub-images.");  
+    int gridElementSize = toBeTransformedImage.width / 3;
   
-  for (int y = 0; y < 3; y++) {
-    for (int x = 0; x < 3; x++) {
-      PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
-      // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-      imageSection.save(targetPathName + fileName + "-grid-9/" + fileName + "-" + i + ".jpg");
-      
-      xStart = xStart - gridElementSize;
-      
-      i++;
+    int xStart = gridElementSize * 2;
+    int yStart = gridElementSize * 2;
+    int i = 1;
+    
+    for (int y = 0; y < 3; y++) {
+      for (int x = 0; x < 3; x++) {
+        PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
+        // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
+        imageSection.save(targetPathName + fileName + "-grid-9/" + fileName + "-" + i + ".jpg");
+        
+        xStart = xStart - gridElementSize;
+        
+        i++;
+      }
+      yStart = yStart - gridElementSize;
+      // reset, to start from the right
+      xStart = gridElementSize * 2;
     }
-    yStart = yStart - gridElementSize;
-    // reset, to start from the right
-    xStart = gridElementSize * 2;
   }
 }
 
@@ -101,139 +108,7 @@ void genereateElementsForGridThree(String commandName, PImage baseImage) {
   }
 }
 
-// transform image to 1:1
-PImage transformToSquare(String commandName, PImage baseImage) {
-  println("Checking aspect ratio of image and transform accordingly. Target aspection ratio is 1:1");
-  PImage imageSection = baseImage;
-  
-  if (baseImage.width == baseImage.height) {
-    println("[INFO]: No transoformation, necessary.");
-    baseImage.resize(1200, 0);
-    imageSection = baseImage; 
-  } else if (baseImage.width > baseImage.height) {
-    baseImage.resize(0, 1200);
-    int xStart = 0;
-    
-    if (commandName.contains("top") == true || commandName.contains("bottom") == true) {
-      println("[ERROR]: In 'Landscape Format' images can not be positioned on the 'y-Axis'; 'x-Axis' only. Please review your file naming!");
-    } else {
-      if (commandName.contains("left") == true) {
-        xStart = 0;
-      } else if (commandName.contains("right") == true) {
-        xStart = baseImage.width - baseWidth;
-      } else if (commandName.contains("center") == true) {
-        xStart = (baseImage.width - baseWidth) / 2;
-      } else {
-        // default: 'center'
-        xStart = (baseImage.width - baseWidth) / 2;
-      }
-    }
-    imageSection = baseImage.get(xStart, 0, baseWidth, baseHeight);
-  } else if (baseImage.width < baseImage.height) {
-    baseImage.resize(1200, 0);
-    int yStart = 0;
-    if (commandName.contains("left") == true || commandName.contains("right") == true) {
-      println("[ERROR]: In 'Portrait Format' images can not be positioned on the 'x-Axis'; 'y-Axis' only. Please review your file naming!");
-    } else {
-      if (commandName.contains("top") == true) {
-        yStart = 0;
-      } else if (commandName.contains("bottom") == true) {
-        yStart = baseImage.height - baseHeight;
-      } else if (commandName.contains("center") == true) {
-        yStart = (baseImage.height - baseHeight) / 2;
-      } else {
-        // default: 'center'
-        yStart = (baseImage.height - baseHeight) / 2;
-      }
-    }
-    imageSection = baseImage.get(0, yStart, baseWidth, baseHeight);
-  }
-  return imageSection;
-}
-
-// transform image to 3:2
-PImage transformToThreeToTwo(String commandName, PImage baseImage) {
-  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspection ratio is 3:2");
-  PImage imageSection = baseImage;
-  
-  if (baseImage.width < baseImage.height) {
-    println("[ERROR]: This image is unfit for the targeted transfomation.");
-    exit();
-  } else {
-    if ((baseImage.width / 3) > (baseImage.height / 2)) {
-      int potentialGridElementSize = baseImage.height / 2;
-      int potentialTransformationWidth = potentialGridElementSize * 3;
-      int potentialTransformationHeight = baseImage.height;
-      int xStart = 0;
-      
-      if (commandName.contains("left") == true){
-        xStart = 0;
-      } else if (commandName.contains("right") == true){
-        xStart = baseImage.height - potentialTransformationWidth;
-      } else if (commandName.contains("center") == true){
-        xStart = (baseImage.height - potentialTransformationWidth) / 2;
-      }
-     
-      imageSection = baseImage.get(xStart, 0, potentialTransformationWidth, potentialTransformationHeight);
-    } else {
-      int potentialGridElementSize = baseImage.width / 3;
-      int potentialTransformationWidth = baseImage.width;
-      int potentialTransformationHeight = potentialGridElementSize * 2;
-      int yStart = 0;
-      
-      if (commandName.contains("top") == true){
-        yStart = 0;
-      } else if (commandName.contains("bottom") == true){
-        yStart = baseImage.height - potentialTransformationHeight;
-      } else if (commandName.contains("center") == true){
-        yStart = (baseImage.height - potentialTransformationHeight) / 2;
-      }
-      
-      imageSection = baseImage.get(0, yStart, potentialTransformationWidth, potentialTransformationHeight);
-      imageSection.resize(1200, 0);
-    }
-  }
-  return imageSection;
-}
-
-// transform image to 3:1
-PImage transformToThreeToOne(String commandName, PImage baseImage) {
-  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspection ratio is 3:1");
-  PImage imageSection = baseImage;
-  
-  if (baseImage.width < baseImage.height) {
-    println("[ERROR]: This image is unfit for the targeted transfomation.");
-    exit();
-  } else {
-    int potentialElementHeight = baseImage.width / 3;
-    
-    if (potentialElementHeight > baseImage.height) {
-      println("[ERROR]: This image is unfit for the targeted transfomation.");
-      exit();
-    } else {
-      if (commandName.contains("left") == true || commandName.contains("right") == true) {
-        println("[ERROR]: In 'Portrait Format' images can not be positioned on the 'x-Axis'; 'y-Axis' only. Please review your file naming!");
-      } else {
-        int yStart = 0;
-        
-        if (commandName.contains("top") == true) {
-          yStart = 0; 
-        } else if (commandName.contains("bottom") == true) {
-          yStart = baseImage.height - potentialElementHeight;
-        } else if (commandName.contains("center") == true) {
-          yStart = (baseImage.height - potentialElementHeight) / 2;
-        } else {
-          // default: 'center'
-          yStart = (baseImage.height - potentialElementHeight) / 2;
-        }
-        
-        imageSection = baseImage.get(0, yStart, baseImage.width, potentialElementHeight);
-        imageSection.resize(1200, 0);
-      }
-    }
-  }
-  return imageSection;
-}
+// ----- GALLERY_FRAMING ----- //
 
 void galleryFraming(String commandName, PImage baseImage, String targetPathName, String fileName) {
   println("Generating: A gallery-style framed image.");
@@ -332,6 +207,138 @@ void galleryFraming(String commandName, PImage baseImage, String targetPathName,
   saveFrame(targetPathName + fileName + ".jpg");
 }
 
+// ----- PRE_PROCESSING ----- //
+
+// transform image to 1:1
+PImage transformToSquare(String commandName, PImage baseImage) {
+  println("Checking aspect ratio of image and transform accordingly. Target aspection ratio is 1:1");
+  PImage imageSection = baseImage;
+  
+  if (baseImage.width == baseImage.height) {
+    println("[INFO]: No transoformation, necessary.");
+    baseImage.resize(1200, 0);
+    imageSection = baseImage; 
+  } else if (baseImage.width > baseImage.height) {
+    baseImage.resize(0, 1200);
+    int xStart = 0;
+    
+    if (commandName.contains("top") == true || commandName.contains("bottom") == true) {
+      println("[ERROR]: In 'Landscape Format' images can not be positioned on the 'y-Axis'; 'x-Axis' only. Please review your file naming!");
+      return null;
+    } else {
+      if (commandName.contains("left") == true) {
+        xStart = 0;
+      } else if (commandName.contains("right") == true) {
+        xStart = baseImage.width - baseWidth;
+      } else if (commandName.contains("center") == true) {
+        xStart = (baseImage.width - baseWidth) / 2;
+      } else {
+        // default: 'center'
+        xStart = (baseImage.width - baseWidth) / 2;
+      }
+    }
+    imageSection = baseImage.get(xStart, 0, baseWidth, baseHeight);
+  } else if (baseImage.width < baseImage.height) {
+    baseImage.resize(1200, 0);
+    int yStart = 0;
+    if (commandName.contains("left") == true || commandName.contains("right") == true) {
+      println("[ERROR]: In 'Portrait Format' images can not be positioned on the 'x-Axis'; 'y-Axis' only. Please review your file naming!");
+      return null;
+    } else {
+      if (commandName.contains("top") == true) {
+        yStart = 0;
+      } else if (commandName.contains("bottom") == true) {
+        yStart = baseImage.height - baseHeight;
+      } else if (commandName.contains("center") == true) {
+        yStart = (baseImage.height - baseHeight) / 2;
+      } else {
+        // default: 'center'
+        yStart = (baseImage.height - baseHeight) / 2;
+      }
+    }
+    imageSection = baseImage.get(0, yStart, baseWidth, baseHeight);
+  }
+  return imageSection;
+}
+
+// transform image to 3:2
+PImage transformToThreeToTwo(String commandName, PImage baseImage) {
+  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspection ratio is 3:2");
+  PImage imageSection = baseImage;
+  
+  if (baseImage.width < baseImage.height) {
+    println("[ERROR]: This image is unfit for the targeted transfomation.");
+  } else {
+    if ((baseImage.width / 3) > (baseImage.height / 2)) {
+      int potentialGridElementSize = baseImage.height / 2;
+      int potentialTransformationWidth = potentialGridElementSize * 3;
+      int potentialTransformationHeight = baseImage.height;
+      int xStart = 0;
+      
+      if (commandName.contains("left") == true){
+        xStart = 0;
+      } else if (commandName.contains("right") == true){
+        xStart = baseImage.height - potentialTransformationWidth;
+      } else if (commandName.contains("center") == true){
+        xStart = (baseImage.height - potentialTransformationWidth) / 2;
+      }
+     
+      imageSection = baseImage.get(xStart, 0, potentialTransformationWidth, potentialTransformationHeight);
+    } else {
+      int potentialGridElementSize = baseImage.width / 3;
+      int potentialTransformationWidth = baseImage.width;
+      int potentialTransformationHeight = potentialGridElementSize * 2;
+      int yStart = 0;
+      
+      if (commandName.contains("top") == true){
+        yStart = 0;
+      } else if (commandName.contains("bottom") == true){
+        yStart = baseImage.height - potentialTransformationHeight;
+      } else if (commandName.contains("center") == true){
+        yStart = (baseImage.height - potentialTransformationHeight) / 2;
+      }
+      
+      imageSection = baseImage.get(0, yStart, potentialTransformationWidth, potentialTransformationHeight);
+      imageSection.resize(1200, 0);
+    }
+  }
+  return imageSection;
+}
+
+// transform image to 3:1
+PImage transformToThreeToOne(String commandName, PImage baseImage) {
+  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspection ratio is 3:1");
+  PImage imageSection = baseImage;
+  
+  if (baseImage.width < baseImage.height) {
+    println("[ERROR]: This image is unfit for the targeted transfomation.");
+  } else {
+    int potentialElementHeight = baseImage.width / 3;
+    
+    if (potentialElementHeight > baseImage.height) {
+      println("[ERROR]: This image is unfit for the targeted transfomation.");
+    } else {
+      int yStart = 0;
+      
+      if (commandName.contains("top") == true) {
+        yStart = 0; 
+      } else if (commandName.contains("bottom") == true) {
+        yStart = baseImage.height - potentialElementHeight;
+      } else if (commandName.contains("center") == true) {
+        yStart = (baseImage.height - potentialElementHeight) / 2;
+      } else {
+        // default: 'center'
+        yStart = (baseImage.height - potentialElementHeight) / 2;
+      }
+      
+      imageSection = baseImage.get(0, yStart, baseImage.width, potentialElementHeight);
+      imageSection.resize(1200, 0);
+    }
+  }
+  return imageSection;
+}
+
+// ----- CLEAN_UP_OUTPUT ----- //
 
 // clean-up of input file name for scenario-specific output
 String cleanUpFileName(String baseFileName) {
@@ -346,6 +353,8 @@ String cleanUpFileName(String baseFileName) {
   }
   return modifiedFileName;
 }
+
+// ----- PROGRAM_FLOW ----- //
 
 // program-flow for fully automatic mode
 void automaticWorkflow(String[] filesToParse, String sourcePathName, String targetPathName) {
@@ -369,7 +378,11 @@ void automaticWorkflow(String[] filesToParse, String sourcePathName, String targ
       } else if (commandName.contains("-grid-6") == true) {
         genereateElementsForGridSix(commandName, baseImage);
       } else if (commandName.contains("-grid-3") == true) {
-        genereateElementsForGridThree(commandName, baseImage);
+        if (commandName.contains("left") == true || commandName.contains("right") == true) {
+          println("[ERROR]: In 'Portrait Format' images can not be positioned on the 'x-Axis'; 'y-Axis' only. Please review your file naming!");
+        } else {
+          genereateElementsForGridThree(commandName, baseImage);
+        }
       } else if (commandName.contains("gallery") == true) {
         galleryFraming(commandName, baseImage, targetPathName, fileName);
       }
