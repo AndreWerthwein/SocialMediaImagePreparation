@@ -338,79 +338,23 @@ void galleryFraming(String commandName, PImage baseImage, String targetPathName,
   saveFrame(targetPathName + fileName + ".jpg");
 }
 
+
+// clean-up of input file name for scenario-specific output
 String cleanUpFileName(String baseFileName) {
   String modifiedFileName = baseFileName.replace(".jpg", "");
+  String[] commandNamesAll = {"-grid-9", "-grid-6", "-grid-3", "-top", "-bottom", "-left", "-right", "-center", "-gallery-s", "-gallery-m", "-gallery-l", "-black", "-white" };
   
-  // commands to apply intended social media variations are not part of the filename
-  if (modifiedFileName.contains("-grid-9") == true) {
-    modifiedFileName = modifiedFileName.replace("-grid-9", "");
-  }
-  
-  if (modifiedFileName.contains("-grid-6") == true) {
-    modifiedFileName = modifiedFileName.replace("-grid-6", "");
-  }
-  
-  if (modifiedFileName.contains("-grid-3") == true) {
-    modifiedFileName = modifiedFileName.replace("-grid-3", "");
-  }
- 
-  if (modifiedFileName.contains("-top") == true) {
-    modifiedFileName = modifiedFileName.replace("-top", "");
-  }
-  
-  if (modifiedFileName.contains("-bottom") == true) {
-    modifiedFileName = modifiedFileName.replace("-bottom", "");
-  }
-  
-  if (modifiedFileName.contains("-left") == true) {
-    modifiedFileName = modifiedFileName.replace("-left", "");
-  }
-  
-  if (modifiedFileName.contains("-right") == true) {
-    modifiedFileName = modifiedFileName.replace("-right", "");
-  }
-  
-  if (modifiedFileName.contains("-center") == true) {
-    modifiedFileName = modifiedFileName.replace("-center", "");
-  }
-  
-  // due to naming-convention filenames may contain single-digit numbers
-  if (modifiedFileName.contains("1") == true 
-      || modifiedFileName.contains("2") == true 
-      || modifiedFileName.contains("3") == true
-      || modifiedFileName.contains("4") == true 
-      || modifiedFileName.contains("5") == true 
-      || modifiedFileName.contains("6") == true 
-      || modifiedFileName.contains("7") == true
-      || modifiedFileName.contains("8") == true 
-      || modifiedFileName.contains("9") == true) {
-        if (modifiedFileName.contains("gallery") == false) {
-          modifiedFileName = modifiedFileName.substring(0, (modifiedFileName.length() - 2));
+  // commands to apply intended social media variations are not part of the filename 
+  for (int i = 0; i < commandNamesAll.length; i++) {
+    if (modifiedFileName.contains(commandNamesAll[i]) == true) {
+      String currentCommandName = modifiedFileName;
+      modifiedFileName = modifiedFileName.replace(commandNamesAll[i], "");
+      
+      if (currentCommandName.contains("grid") == true) {
+        modifiedFileName = modifiedFileName.substring(0, (modifiedFileName.length() - 2));
+      }
     }
   }
-  
-  if (modifiedFileName.contains("-gallery-s") == true) {
-    modifiedFileName = modifiedFileName.replace("-gallery-s", "");
-  }
-  
-  if (modifiedFileName.contains("-black") == true) {
-    modifiedFileName = modifiedFileName.replace("-black", "");
-  }
-  
-  if (modifiedFileName.contains("-white") == true) {
-    modifiedFileName = modifiedFileName.replace("-white", "");
-  }
-  
-  if (modifiedFileName.contains("-gallery-m") == true) {
-    modifiedFileName = modifiedFileName.replace("-gallery-m", "");
-  }
-  
-  if (modifiedFileName.contains("-gallery-l") == true) {
-    modifiedFileName = modifiedFileName.replace("-gallery-l", "");
-  }
-  
-  print("Modifizierter Dateiname: " + modifiedFileName);
-  
   return modifiedFileName;
 }
 
@@ -418,7 +362,7 @@ String cleanUpFileName(String baseFileName) {
 void automaticWorkflow(String commandName, PImage baseImage, String sourcePathName, String fileName) {
   println("# FULLY AUTOMATIC MODE");
   println();
-  println("Current Transformation:" + fileName);
+  println("Current Transformation: " + fileName);
   
   if (commandName.contains("-grid-9") == true) {
     genereateElementsForGridNine(commandName, baseImage);
