@@ -176,15 +176,31 @@ PImage transformToThreeToTwo(String commandName, PImage baseImage) {
       int potentialGridElementSize = baseImage.height / 2;
       int potentialTransformationWidth = potentialGridElementSize * 3;
       int potentialTransformationHeight = baseImage.height;
+      int xStart = 0;
       
-      int xStart = (baseImage.width - potentialTransformationWidth) / 2;
+      if (commandName.contains("left") == true){
+        xStart = 0;
+      } else if (commandName.contains("right") == true){
+        xStart = baseImage.height - potentialTransformationWidth;
+      } else if (commandName.contains("center") == true){
+        xStart = (baseImage.height - potentialTransformationWidth) / 2;
+      }
+     
       imageSection = baseImage.get(xStart, 0, potentialTransformationWidth, potentialTransformationHeight);
     } else {
       int potentialGridElementSize = baseImage.width / 3;
       int potentialTransformationWidth = baseImage.width;
       int potentialTransformationHeight = potentialGridElementSize * 2;
+      int yStart = 0;
       
-      int yStart = (baseImage.height - potentialTransformationHeight) / 2;
+      if (commandName.contains("top") == true){
+        yStart = 0;
+      } else if (commandName.contains("bottom") == true){
+        yStart = baseImage.height - potentialTransformationHeight;
+      } else if (commandName.contains("center") == true){
+        yStart = (baseImage.height - potentialTransformationHeight) / 2;
+      }
+      
       imageSection = baseImage.get(0, yStart, potentialTransformationWidth, potentialTransformationHeight);
       imageSection.resize(1200, 0);
     }
@@ -207,7 +223,15 @@ PImage transformToThreeToOne(String commandName, PImage baseImage) {
       println("[ERROR] This image is unfit for the targeted transfomation.");
       exit();
     } else {
-      int yStart = (baseImage.height - potentialElementHeight) / 2;
+      int yStart = 0;
+      
+      if (commandName.contains("top") == true){
+        yStart = 0;
+      } else if (commandName.contains("bottom") == true){
+        yStart = baseImage.height - potentialElementHeight;
+      } else if (commandName.contains("center") == true){
+        yStart = (baseImage.height - potentialElementHeight) / 2;
+      }
       
       imageSection = baseImage.get(0, yStart, baseImage.width, potentialElementHeight);
       imageSection.resize(1200, 0);
