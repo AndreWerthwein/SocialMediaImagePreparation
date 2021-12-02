@@ -19,25 +19,8 @@ void setup() {
 }
 
 void draw() {
-  println("Generating variations for Social-Media-Scenarios");
-  println();
-
-  for (int x = 0; x < imagesInDirectory.length; x++) {
-    PImage originalImage = loadImage(sourcePathName + imagesInDirectory[x]);
-    
-    if (originalImage.width < 1200) {
-      println("The given image is too small to be qualify for any of the implemented Social-Media-Scenarios.");
-      exit();
-    } else {
-      fileName = cleanUpFileName(imagesInDirectory[x]);
-      commandName = imagesInDirectory[x];
-      
-      automaticWorkflow(commandName, originalImage, targetPathName, fileName);
-    }
-    println("------------");
-  }
-  println();
-  println("Done.");
+  automaticWorkflow(imagesInDirectory, sourcePathName, targetPathName);
+  println("DONE.");
   exit();
 }
 
@@ -47,7 +30,7 @@ void genereateElementsForGridNine(String commandName, PImage baseImage) {
   PImage toBeTransformedImage = transformToSquare(commandName, baseImage);
   image(toBeTransformedImage, 0, 0);
   
-  println("Generating image sections to produce a grid, consisting of 9 sub-images.");  
+  println("Generating: All image sections to produce a grid, consisting of 9 sub-images.");  
   int gridElementSize = toBeTransformedImage.width / 3;
 
   int xStart = gridElementSize * 2;
@@ -76,7 +59,7 @@ void genereateElementsForGridSix(String commandName, PImage baseImage) {
   PImage toBeTransformedImage = transformToThreeToTwo(commandName, baseImage);
   image(toBeTransformedImage, 0, 0);
   
-  println("Generating image sections to produce a grid, consisting of 6 sub-images.");
+  println("Generating: All image sections to produce a grid, consisting of 6 sub-images.");
   int gridElementSize = toBeTransformedImage.width / 3;
   
   int xStart = gridElementSize * 2;
@@ -102,7 +85,7 @@ void genereateElementsForGridThree(String commandName, PImage baseImage) {
   PImage toBeTransformedImage = transformToThreeToOne(commandName, baseImage);
   image(toBeTransformedImage, 0, 0);
   
-  println("Generating image sections to produce a grid, consisting of 3 sub-images.");
+  println("Generating: All image sections to produce a grid, consisting of 3 sub-images.");
   int gridElementSize = toBeTransformedImage.width / 3;
   
   int xStart = gridElementSize * 2;
@@ -120,20 +103,19 @@ void genereateElementsForGridThree(String commandName, PImage baseImage) {
 
 // transform image to 1:1
 PImage transformToSquare(String commandName, PImage baseImage) {
-  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 1:1");
+  println("Checking aspect ratio of image and transform accordingly. Target aspection ratio is 1:1");
   PImage imageSection = baseImage;
   
   if (baseImage.width == baseImage.height) {
-    println("No transoformation, necessary.");
+    println("[INFO]: No transoformation, necessary.");
     baseImage.resize(1200, 0);
     imageSection = baseImage; 
   } else if (baseImage.width > baseImage.height) {
-    println("Detected: 'Landscape Format'. >> Target: 'Square Format'");
-    baseImage.resize(0, 1200);
+    baseImage.resize(1200, 0);
     int xStart = 0;
     
     if (commandName.contains("top") == true || commandName.contains("top") == true) {
-      println("[ERROR] In 'Landscape Format' images can not be positioned on the 'y-Axis'; 'x-Axis' only. Please review your file naming!");
+      println("[ERROR]: In 'Landscape Format' images can not be positioned on the 'y-Axis'; 'x-Axis' only. Please review your file naming!");
     } else {
       if (commandName.contains("left") == true) {
         xStart = 0;
@@ -146,8 +128,7 @@ PImage transformToSquare(String commandName, PImage baseImage) {
     
     imageSection = baseImage.get(xStart, 0, baseWidth, baseHeight);
   } else if (baseImage.width < baseImage.height) {
-    println("Detected: 'Portrait Format'. >> Target: 'Square Format'");
-    baseImage.resize(1200, 0);
+    baseImage.resize(0, 1200);
     int yStart = 0;
     
     if (commandName.contains("top") == true) {
@@ -165,11 +146,11 @@ PImage transformToSquare(String commandName, PImage baseImage) {
 
 // transform image to 3:2
 PImage transformToThreeToTwo(String commandName, PImage baseImage) {
-  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:2");
+  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspection ratio is 3:2");
   PImage imageSection = baseImage;
   
   if (baseImage.width < baseImage.height) {
-    println("[ERROR] This image is unfit for the targeted transfomation.");
+    println("[ERROR]: This image is unfit for the targeted transfomation.");
     exit();
   } else {
     if ((baseImage.width / 3) > (baseImage.height / 2)) {
@@ -210,17 +191,17 @@ PImage transformToThreeToTwo(String commandName, PImage baseImage) {
 
 // transform image to 3:1
 PImage transformToThreeToOne(String commandName, PImage baseImage) {
-  println("Checking aspect ration of image and transform accordingly. Target aspection ratio is 3:1");
+  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspection ratio is 3:1");
   PImage imageSection = baseImage;
   
   if (baseImage.width < baseImage.height) {
-    println("[ERROR] This image is unfit for the targeted transfomation.");
+    println("[ERROR]: This image is unfit for the targeted transfomation.");
     exit();
   } else {
     int potentialElementHeight = baseImage.width / 3;
     
     if (potentialElementHeight > baseImage.height) {
-      println("[ERROR] This image is unfit for the targeted transfomation.");
+      println("[ERROR]: This image is unfit for the targeted transfomation.");
       exit();
     } else {
       int yStart = 0;
@@ -241,7 +222,7 @@ PImage transformToThreeToOne(String commandName, PImage baseImage) {
 }
 
 void galleryFraming(String commandName, PImage baseImage, String targetPathName, String fileName) {
-  println("Generating image framed image.");
+  println("Generating: A gallery-style framed image.");
   size(1200, 1200);
    
   if (commandName.contains("white") == true) {
@@ -332,7 +313,6 @@ void galleryFraming(String commandName, PImage baseImage, String targetPathName,
       xStart = (baseWidth - baseImage.width) / 2;
     }
   }
-  
   image(baseImage, xStart, yStart);
   
   saveFrame(targetPathName + fileName + ".jpg");
@@ -359,18 +339,34 @@ String cleanUpFileName(String baseFileName) {
 }
 
 // program-flow for fully automatic mode
-void automaticWorkflow(String commandName, PImage baseImage, String sourcePathName, String fileName) {
+void automaticWorkflow(String[] filesToParse, String sourcePathName, String targetPathName) {
   println("# FULLY AUTOMATIC MODE");
+  println("Generating variations for Social-Media-Scenarios");
   println();
-  println("Current Transformation: " + fileName);
   
-  if (commandName.contains("-grid-9") == true) {
-    genereateElementsForGridNine(commandName, baseImage);
-  } else if (commandName.contains("-grid-6") == true) {
-    genereateElementsForGridSix(commandName, baseImage);
-  } else if (commandName.contains("-grid-3") == true) {
-    genereateElementsForGridThree(commandName, baseImage);
-  } else if (commandName.contains("gallery") == true) {
-    galleryFraming(commandName, baseImage, sourcePathName, fileName);
+  for (int x = 0; x < filesToParse.length; x++) {
+    PImage baseImage = loadImage(sourcePathName + filesToParse[x]);
+    
+    if (baseImage.width < 1200) {
+      println("The given image is too small to be qualify for any of the implemented Social-Media-Scenarios.");
+      exit();
+    } else {
+      fileName = cleanUpFileName(filesToParse[x]);
+      println("Current Transformation: '" + fileName + "'");
+      commandName = filesToParse[x];
+      
+      if (commandName.contains("-grid-9") == true) {
+        genereateElementsForGridNine(commandName, baseImage);
+      } else if (commandName.contains("-grid-6") == true) {
+        genereateElementsForGridSix(commandName, baseImage);
+      } else if (commandName.contains("-grid-3") == true) {
+        genereateElementsForGridThree(commandName, baseImage);
+      } else if (commandName.contains("gallery") == true) {
+        galleryFraming(commandName, baseImage, targetPathName, fileName);
+      }
+    }
+    println();
+    println("------------");
+    println();
   }
 }
