@@ -41,7 +41,7 @@ void genereateElementsForGridNine(String commandName, PImage baseImage) {
     for (int x = 0; x < 3; x++) {
       PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
       // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-      imageSection.save(targetPathName + fileName + "-" + i + ".jpg");
+      imageSection.save(targetPathName + fileName + "-grid-9/" + fileName + "-" + i + ".jpg");
       
       xStart = xStart - gridElementSize;
       
@@ -69,7 +69,7 @@ void genereateElementsForGridSix(String commandName, PImage baseImage) {
   for (int y = 0; y < 2; y++) {
     for (int x = 0; x < 3; x++) {
       PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
-      imageSection.save(targetPathName + fileName + "-" + i + ".jpg");
+      imageSection.save(targetPathName + fileName + "-grid-6/" + fileName +  "-" + i + ".jpg");
       
       xStart = xStart - gridElementSize;
       i++;
@@ -94,7 +94,7 @@ void genereateElementsForGridThree(String commandName, PImage baseImage) {
   for (int x = 0; x < 3; x++) {
     PImage imageSection = toBeTransformedImage.get(xStart, 0, gridElementSize, gridElementSize);
     // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-    imageSection.save(targetPathName + fileName + "-" + i + ".jpg");
+    imageSection.save(targetPathName + fileName + "-grid-3/" + fileName + "-" + i + ".jpg");
     
     xStart = xStart - gridElementSize;
     i++;
@@ -299,7 +299,7 @@ void galleryFraming(String commandName, PImage baseImage, String targetPathName,
       } else if (commandName.contains("right") == true) {
         xStart = baseWidth - (baseImage.width + offsetMediumImage);
       } else if (commandName.contains("center") == true) {
-        xStart = (baseWidth - baseImage.width);        
+        xStart = (baseWidth - baseImage.width) / 2;        
       } else {
         xStart = (baseWidth - baseImage.width);
       }
@@ -327,12 +327,7 @@ String cleanUpFileName(String baseFileName) {
   // commands to apply intended social media variations are not part of the filename 
   for (int i = 0; i < commandNamesAll.length; i++) {
     if (modifiedFileName.contains(commandNamesAll[i]) == true) {
-      String currentCommandName = modifiedFileName;
       modifiedFileName = modifiedFileName.replace(commandNamesAll[i], "");
-      
-      if (currentCommandName.contains("grid") == true) {
-        modifiedFileName = modifiedFileName.substring(0, (modifiedFileName.length() - 2));
-      }
     }
   }
   return modifiedFileName;
