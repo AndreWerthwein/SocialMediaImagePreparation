@@ -24,6 +24,19 @@ void draw() {
   exit();
 }
 
+// ----- CROPPING_TO_SQUARE ----- //
+
+void cropToSquare(String commandName, PImage baseImage) {
+    PImage toBeTransformedImage = transformToSquare(commandName, baseImage);
+    
+    if (toBeTransformedImage == null) {
+      println("Generating: ----");
+    } else {
+      println("Generating: An image cropped to square.");
+      toBeTransformedImage.save(targetPathName + fileName + ".jpg");
+    }
+}
+
 // ----- GENERATING_GRIDS ----- //
 
 // generate elements for grid 3:3:3
@@ -367,7 +380,7 @@ PImage transformToThreeToOne(String commandName, PImage baseImage) {
 // clean-up of input file name for scenario-specific output
 String cleanUpFileName(String baseFileName) {
   String modifiedFileName = baseFileName.replace(".jpg", "");
-  String[] commandNamesAll = {"-grid-9", "-grid-6", "-grid-3", "-top", "-bottom", "-left", "-right", "-center", "-gallery-s", "-gallery-m", "-gallery-l", "-black", "-white" };
+  String[] commandNamesAll = {"-grid-9", "-grid-6", "-grid-3", "-top", "-bottom", "-left", "-right", "-center", "-gallery-s", "-gallery-m", "-gallery-l", "-black", "-white", "-square" };
   
   // commands to apply intended social media variations are not part of the filename 
   for (int i = 0; i < commandNamesAll.length; i++) {
@@ -409,6 +422,8 @@ void automaticWorkflow(String[] filesToParse, String sourcePathName, String targ
         }
       } else if (commandName.contains("gallery") == true) {
         galleryFraming(commandName, baseImage, targetPathName, fileName);
+      } else if (commandName.contains("square") == true) {
+        cropToSquare(commandName, baseImage);
       }
     }
     println();
