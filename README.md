@@ -66,4 +66,4 @@ _Not yet implemented._
 # Notes 
 
 - This was designed in / for [Processing 4](https://processing.org/)
-- Find examples hier: [@werthwein_photography](https://instagram.com/werthwein_photography)
+- Find examples here: [@werthwein_photography](https://instagram.com/werthwein_photography)
