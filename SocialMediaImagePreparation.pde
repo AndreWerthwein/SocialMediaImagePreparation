@@ -64,25 +64,30 @@ void genereateElementsForGridNine(String commandName, PImage baseImage) {
 void genereateElementsForGridSix(String commandName, PImage baseImage) {
   // transforming image into needed format
   PImage toBeTransformedImage = transformToThreeToTwo(commandName, baseImage);
-  image(toBeTransformedImage, 0, 0);
   
-  println("Generating: All image sections to produce a grid, consisting of 6 sub-images.");
-  int gridElementSize = toBeTransformedImage.width / 3;
-  
-  int xStart = gridElementSize * 2;
-  int yStart = gridElementSize;
-  int i = 1;
-  
-  for (int y = 0; y < 2; y++) {
-    for (int x = 0; x < 3; x++) {
-      PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
-      imageSection.save(targetPathName + fileName + "-grid-6/" + fileName +  "-" + i + ".jpg");
-      
-      xStart = xStart - gridElementSize;
-      i++;
+  if (toBeTransformedImage == null) {
+    println("Generating: ----");
+  } else {
+    image(toBeTransformedImage, 0, 0);
+    
+    println("Generating: All image sections to produce a grid, consisting of 6 sub-images.");
+    int gridElementSize = toBeTransformedImage.width / 3;
+    
+    int xStart = gridElementSize * 2;
+    int yStart = gridElementSize;
+    int i = 1;
+    
+    for (int y = 0; y < 2; y++) {
+      for (int x = 0; x < 3; x++) {
+        PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
+        imageSection.save(targetPathName + fileName + "-grid-6/" + fileName +  "-" + i + ".jpg");
+        
+        xStart = xStart - gridElementSize;
+        i++;
+      }
+      yStart = yStart - gridElementSize;
+      xStart = gridElementSize * 2;
     }
-    yStart = yStart - gridElementSize;
-    xStart = gridElementSize * 2;
   }
 }
 
@@ -268,39 +273,58 @@ PImage transformToThreeToTwo(String commandName, PImage baseImage) {
   
   if (baseImage.width < baseImage.height) {
     println("[ERROR]: This image is unfit for the targeted transfomation.");
+    return null;
   } else {
+    int potentialGridElementSize = 0;
+    
+    // get grid-element size
     if ((baseImage.width / 3) > (baseImage.height / 2)) {
-      int potentialGridElementSize = baseImage.height / 2;
-      int potentialTransformationWidth = potentialGridElementSize * 3;
-      int potentialTransformationHeight = baseImage.height;
-      int xStart = 0;
-      
-      if (commandName.contains("left") == true){
-        xStart = 0;
-      } else if (commandName.contains("right") == true){
-        xStart = baseImage.height - potentialTransformationWidth;
-      } else if (commandName.contains("center") == true){
-        xStart = (baseImage.height - potentialTransformationWidth) / 2;
-      }
-     
-      imageSection = baseImage.get(xStart, 0, potentialTransformationWidth, potentialTransformationHeight);
+      potentialGridElementSize = baseImage.height / 2;
     } else {
-      int potentialGridElementSize = baseImage.width / 3;
-      int potentialTransformationWidth = baseImage.width;
-      int potentialTransformationHeight = potentialGridElementSize * 2;
-      int yStart = 0;
-      
-      if (commandName.contains("top") == true){
-        yStart = 0;
-      } else if (commandName.contains("bottom") == true){
-        yStart = baseImage.height - potentialTransformationHeight;
-      } else if (commandName.contains("center") == true){
-        yStart = (baseImage.height - potentialTransformationHeight) / 2;
-      }
-      
-      imageSection = baseImage.get(0, yStart, potentialTransformationWidth, potentialTransformationHeight);
-      imageSection.resize(1200, 0);
+      potentialGridElementSize = baseImage.width / 3;
     }
+    
+    int potentialTransformationWidth = potentialGridElementSize * 3;
+    int potentialTransformationHeight = potentialGridElementSize * 2;
+    int xStart = 0;
+    int yStart = 0;
+    
+    if (baseImage.width > potentialTransformationWidth) {
+      if (commandName.contains("top") == true || commandName.contains("bottom") == true) {
+        println("[ERROR]: In this aspect ratio images can not be positioned on the 'y-Axis'; 'x-Axis' only. Please review your file naming!");
+        return null;
+      } else {
+        if (commandName.contains("left") == true) {
+          xStart = 0;
+        } else if (commandName.contains("right") == true) {
+          xStart = baseImage.width - potentialTransformationWidth;
+        } else if (commandName.contains("center") == true) {
+          xStart = (baseImage.width - potentialTransformationWidth) / 2;
+        } else {
+          // default: 'center'
+          xStart = (baseImage.width - potentialTransformationWidth) / 2;
+        }
+      }
+    } else if (baseImage.height > potentialTransformationHeight) {   
+      if (commandName.contains("left") == true || commandName.contains("right") == true) {
+        println("[ERROR]: In this aspect ratio images can not be positioned on the 'x-Axis'; 'y-Axis' only. Please review your file naming!");
+        return null;
+      } else {
+        if (commandName.contains("top") == true) {
+          yStart = 0;
+        } else if (commandName.contains("bottom") == true) {
+          yStart = baseImage.height - potentialTransformationHeight;
+        } else if (commandName.contains("center") == true) {
+          yStart = (baseImage.height - potentialTransformationHeight) / 2;
+        } else {
+          // default: 'center'
+          yStart = (baseImage.height - potentialTransformationHeight) / 2;
+        }
+      }
+    }
+    
+    imageSection = baseImage.get(xStart, yStart, potentialTransformationWidth, potentialTransformationHeight);
+    imageSection.resize(1200, 0);
   }
   return imageSection;
 }
