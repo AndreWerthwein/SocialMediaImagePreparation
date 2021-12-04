@@ -4,8 +4,6 @@ This is a small Processing-Sketch, that automatically generates all the differen
 
 # How to use?
 
-## Fully Automatic
-
 1. Pick images that are to be present of Social-Media.
 2. Add a suffix to the name of every image you want variations of.
 2. Prepare a single directory containing all the base-images, for which variations need to be generated.
@@ -15,11 +13,11 @@ This is a small Processing-Sketch, that automatically generates all the differen
 
 _Note:_ The console of the Processing sketch offers quite a bit of feedback, which might give important context as to why certain images are not at all or not properly processed.
 
-### How to configure Variations
+## How to configure Variations
 
 - The generated variations in the _Fully Automatic Mode_ are configured by _using_ the following _operators_:
 
-#### Social Media Scenario
+### Social Media Scenario
 
 | Operator | Effect on the automatic Generation | Tested? |
 | --- | --- | --- |
@@ -36,7 +34,7 @@ _Note:_ The console of the Processing sketch offers quite a bit of feedback, whi
 
 _Note:_ The operators `-grid-9`, `-grid-6` and `-grid-3` can not be applied to images in portrait format.
 
-#### Position of basic transformations
+### Position of basic transformations
 
 | Operator | Effect on the automatic Generation | Tested? |
 | --- | --- | --- |
@@ -50,7 +48,7 @@ _Note:_ Please be aware that the operators `-left` and `-right` can not be used 
 
 _Note:_ Please be aware that the operators `-top` and `-bottom` can not be used for images in landscape format, since always the full available height of the image is used.
 
-#### Extras
+### Extras
 
 - This operators can be included, but are only applied within the proper Scenarios.
 
@@ -58,10 +56,6 @@ _Note:_ Please be aware that the operators `-top` and `-bottom` can not be used 
 | --- | --- | --- |
 | `black` | The background of a scenario such as `-gallery-s`, `-gallery-m` or `-gallery-l` is set to black. | Yes. |
 | `white` | The background of a scenario such as `-gallery-s`, `-gallery-m` or `-gallery-l` is set to white. | Yes. |
-
-## UI-based Mode
-
-_Not yet implemented._
 
 # Data- and File-Types
 
