@@ -63,6 +63,17 @@ _Note:_ Please be aware that the operators `-top` and `-bottom` can not be used 
 
 _Not yet implemented._
 
+# Data- and File-Types
+
+- This Processing Sketch supports all Data-/File-Types that Processing itself supports: `.jpg`, `.png`, `.gif` and `.tga`.
+  - If the Data-/File-Type is contained in the File Name the Data-/File-Types will be detected and applied to the generated images.
+  - If the Data-/File-Type is not contained in the File Name the generated images will default to `.jpg`.
+  - If the Data-/File-Type is not supported the image will be skipped and the targeted transformation will not be applied.
+
+# Issues
+
+Should you run into issue or runtime errors, please feel free to open up an Issue at [Repository: SocialMediaImagePreparation](https://github.com/AndreWerthwein/SocialMediaImagePreparation)
+
 # Notes 
 
 - This was designed in / for [Processing 4](https://processing.org/)
