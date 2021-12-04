@@ -7,6 +7,6 @@ void cropToSquare(String commandName, PImage baseImage) {
       println("Generating: ----");
     } else {
       println("Generating: An image cropped to square.");
-      toBeTransformedImage.save(targetPathName + fileName + ".jpg");
+      toBeTransformedImage.save(targetPathName + fileName + fileType);
     }
 }

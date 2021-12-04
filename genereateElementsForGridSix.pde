@@ -20,7 +20,7 @@ void genereateElementsForGridSix(String commandName, PImage baseImage) {
     for (int y = 0; y < 2; y++) {
       for (int x = 0; x < 3; x++) {
         PImage imageSection = toBeTransformedImage.get(xStart, yStart, gridElementSize, gridElementSize);
-        imageSection.save(targetPathName + fileName + "-grid-6/" + fileName +  "-" + i + ".jpg");
+        imageSection.save(targetPathName + fileName + "-grid-6/" + fileName +  "-" + i + fileType);
         
         xStart = xStart - gridElementSize;
         i++;

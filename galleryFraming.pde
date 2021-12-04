@@ -94,5 +94,5 @@ void galleryFraming(String commandName, PImage baseImage, String targetPathName,
   }
   image(baseImage, xStart, yStart);
   
-  saveFrame(targetPathName + fileName + ".jpg");
+  saveFrame(targetPathName + fileName + fileType);
 }

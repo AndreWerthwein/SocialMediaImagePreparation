@@ -15,7 +15,7 @@ void genereateElementsForGridThree(String commandName, PImage baseImage) {
   for (int x = 0; x < 3; x++) {
     PImage imageSection = toBeTransformedImage.get(xStart, 0, gridElementSize, gridElementSize);
     // image numeration goes from right to left, goes from bottom to top, to ensure grid-saftey
-    imageSection.save(targetPathName + fileName + "-grid-3/" + fileName + "-" + i + ".jpg");
+    imageSection.save(targetPathName + fileName + "-grid-3/" + fileName + "-" + i + fileType);
     
     xStart = xStart - gridElementSize;
     i++;

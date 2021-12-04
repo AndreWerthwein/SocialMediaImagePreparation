@@ -4,7 +4,7 @@ String sourcePathName = "C:/Users/andre/Documents/GitHub/SocialMediaImagePrepara
 // enter path to target directory here:
 String targetPathName = "C:/Users/andre/Documents/GitHub/SocialMediaImagePreparation/";
 
-String fileName;
+String fileName, fileType;
 String commandName;
 
 int baseWidth = 1200;
