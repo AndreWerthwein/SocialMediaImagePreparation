@@ -1,14 +1,14 @@
 // ----- PRE_PROCESSING ----- //
 
 // transform image to 3:1
-PImage transformToThreeToOne(String commandName, PImage baseImage) {
-  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspect ratio is 3:1");
+PImage transformToTwoToOne(String commandName, PImage baseImage) {
+  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspect ratio is 2:1");
   PImage imageSection = baseImage;
   
   if (baseImage.width < baseImage.height) {
     println("[ERROR]: This image is unfit for the targeted transfomation.");
   } else {
-    int potentialElementHeight = baseImage.width / 3;
+    int potentialElementHeight = baseImage.width / 2;
     
     if (potentialElementHeight > baseImage.height) {
       println("[ERROR]: This image is unfit for the targeted transfomation.");

@@ -10,7 +10,7 @@ String cleanUpFileName(String baseFileName) {
     modifiedFileName = baseFileName;
   }
   
-  String[] commandNamesAll = {"-grid-9", "-grid-6", "-grid-3", "-top", "-bottom", "-left", "-right", "-center", "-gallery-s", "-gallery-m", "-gallery-l", "-black", "-white", "-square" };
+  String[] commandNamesAll = {"-grid-9", "-grid-6", "-grid-3", "-grid-2", "-top", "-bottom", "-left", "-right", "-center", "-gallery-s", "-gallery-m", "-gallery-l", "-black", "-white", "-square" };
   
   // commands to apply intended social media variations are not part of the filename 
   for (int i = 0; i < commandNamesAll.length; i++) {

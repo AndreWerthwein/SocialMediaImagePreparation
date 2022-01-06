@@ -2,7 +2,7 @@
 
 // transform image to 1:1
 PImage transformToSquare(String commandName, PImage baseImage) {
-  println("Checking aspect ratio of image and transform accordingly. Target aspection ratio is 1:1");
+  println("Checking aspect ratio of image and transform accordingly. Target aspect ratio is 1:1");
   PImage imageSection = baseImage;
   
   if (baseImage.width == baseImage.height) {

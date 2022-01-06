@@ -2,7 +2,7 @@
 
 // transform image to 3:2
 PImage transformToThreeToTwo(String commandName, PImage baseImage) {
-  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspection ratio is 3:2");
+  println("Pre-Processing: Checking aspect ratio of image and transform accordingly. Target aspect ratio is 3:2");
   PImage imageSection = baseImage;
   
   if (baseImage.width < baseImage.height) {

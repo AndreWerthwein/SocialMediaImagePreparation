@@ -28,9 +28,15 @@ void automaticWorkflow(String[] filesToParse, String sourcePathName, String targ
           genereateElementsForGridSix(commandName, baseImage);
         } else if (commandName.contains("-grid-3") == true) {
           if (commandName.contains("left") == true || commandName.contains("right") == true) {
-            println("[ERROR]: In 'Portrait Format' images can not be positioned on the 'x-Axis'; 'y-Axis' only. Please review your file naming!");
+            println("[ERROR]: Images, that are supposed to be split up into grid-elements can not be positioned on the 'x-Axis'; 'y-Axis' only. Please review your file naming!");
           } else {
             genereateElementsForGridThree(commandName, baseImage);
+          }
+        } else if (commandName.contains("-grid-2") == true) {
+          if (commandName.contains("left") == true || commandName.contains("right") == true) {
+            println("[ERROR]: Images, that are supposed to be split up into grid-elements can not be positioned on the 'x-Axis'; 'y-Axis' only. Please review your file naming!");
+          } else {
+            generateElementsForGridTwo(commandName, baseImage);
           }
         } else if (commandName.contains("gallery") == true) {
           galleryFraming(commandName, baseImage, targetPathName, fileName);
